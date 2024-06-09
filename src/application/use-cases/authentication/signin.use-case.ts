@@ -1,4 +1,4 @@
-import { type HttpPostClient } from './contracts/http-client'
+import { type HttpPostClient } from '../../contracts/http-post-client'
 
 export class SignInUseCase {
   constructor (

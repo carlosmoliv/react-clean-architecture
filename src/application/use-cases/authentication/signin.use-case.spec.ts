@@ -1,15 +1,7 @@
 import { faker } from '@faker-js/faker'
 
-import { type HttpPostClient } from './contracts/http-client'
 import { SignInUseCase } from './signin.use-case'
-
-class HttpPostClientSpy implements HttpPostClient {
-  url?: string
-
-  async post (url: string): Promise<void> {
-    this.url = url
-  }
-}
+import { HttpPostClientSpy } from '../../test/mock-http-client'
 
 describe('SignInUseCase', () => {
   let sut: SignInUseCase
