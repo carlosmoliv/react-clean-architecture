@@ -1,3 +1,5 @@
+import { faker } from '@faker-js/faker'
+
 import { type HttpPostClient } from './contracts/http-client'
 import { SignInUseCase } from './signin.use-case'
 
@@ -16,7 +18,7 @@ describe('SignInUseCase', () => {
 
   beforeEach(() => {
     httpPostClientSpy = new HttpPostClientSpy()
-    url = 'any_url'
+    url = faker.internet.url()
     sut = new SignInUseCase(url, httpPostClientSpy)
   })
 
