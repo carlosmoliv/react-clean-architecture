@@ -1,4 +1,5 @@
 import { type HttpPostClient } from '../../contracts/http-post-client'
+import { type SignInInput } from './signin.input'
 
 export class SignInUseCase {
   constructor (
@@ -6,7 +7,7 @@ export class SignInUseCase {
     private readonly httpClient: HttpPostClient
   ) {}
 
-  async execute (): Promise<void> {
-    await this.httpClient.post(this.url)
+  async execute (input: SignInInput): Promise<void> {
+    await this.httpClient.post(this.url, input)
   }
 }
