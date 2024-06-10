@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker'
 
 import { SignInUseCase } from './signin.use-case'
-import { HttpPostClientSpy } from '../../test/mock-http-client'
-import { mockSignInput } from '../../test/mock-sign-input'
+import { HttpPostClientSpy } from '@/application/test/mock-http-client'
+import { mockSigInInput } from '@/application/test/mock-sigin-input'
 
 describe('SignInUseCase', () => {
   let sut: SignInUseCase
@@ -16,13 +16,13 @@ describe('SignInUseCase', () => {
   })
 
   test('Call to HttpClient with correct URL', async () => {
-    await sut.execute(mockSignInput())
+    await sut.execute(mockSigInInput())
 
     expect(httpPostClientSpy.url).toBe(url)
   })
 
   test('Call to HttpClient with correct body', async () => {
-    const signInput = mockSignInput()
+    const signInput = mockSigInInput()
 
     await sut.execute(signInput)
 
