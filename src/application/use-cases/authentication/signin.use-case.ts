@@ -1,5 +1,7 @@
 import { type HttpPostClient } from '@/application/contracts/http-post-client'
 import { type SignInInput } from './signin.input'
+import { HttpStatusCode } from '@/application/contracts/http-response'
+import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials.error'
 
 export class SignInUseCase {
   constructor (
@@ -8,6 +10,10 @@ export class SignInUseCase {
   ) {}
 
   async execute (input: SignInInput): Promise<void> {
-    await this.httpClient.post(this.url, input)
+    const httpResponse = await this.httpClient.post(this.url, input)
+    switch (httpResponse.statusCode) {
+      case HttpStatusCode.unauthorized:
+        throw new InvalidCredentialsError()
+    }
   }
 }
