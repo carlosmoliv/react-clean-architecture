@@ -5,6 +5,7 @@ import { HttpPostClientSpy } from '@/application/test/mock-http-client'
 import { mockSigInInput } from '@/application/test/mock-sigin-input'
 import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials.error'
 import { HttpStatusCode } from '@/application/contracts/http-response'
+import { UnexpectedError } from '@/domain/errors/unexpected.error'
 
 describe('SignInUseCase', () => {
   let sut: SignInUseCase
@@ -31,7 +32,7 @@ describe('SignInUseCase', () => {
     expect(httpPostClientSpy.body).toEqual(signInput)
   })
 
-  test('Sign In throws InvalidCredentialsError for unauthorized access', async () => {
+  test('Sign In throws InvalidCredentialsError for unauthorized access response', async () => {
     httpPostClientSpy.response = {
       statusCode: HttpStatusCode.unauthorized
     }
@@ -39,5 +40,35 @@ describe('SignInUseCase', () => {
     const promise = sut.execute(mockSigInInput())
 
     await expect(promise).rejects.toThrow(new InvalidCredentialsError())
+  })
+
+  test('Sign In throws UnexpectedError for bad request response', async () => {
+    httpPostClientSpy.response = {
+      statusCode: HttpStatusCode.badRequest
+    }
+
+    const promise = sut.execute(mockSigInInput())
+
+    await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  test('Sign In throws UnexpectedError for server error response', async () => {
+    httpPostClientSpy.response = {
+      statusCode: HttpStatusCode.serverError
+    }
+
+    const promise = sut.execute(mockSigInInput())
+
+    await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  test('Sign In throws UnexpectedError for not found response', async () => {
+    httpPostClientSpy.response = {
+      statusCode: HttpStatusCode.serverError
+    }
+
+    const promise = sut.execute(mockSigInInput())
+
+    await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 })
