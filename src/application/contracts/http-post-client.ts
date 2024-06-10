@@ -1,5 +1,5 @@
 import { type HttpResponse } from '@/application/contracts/http-response'
 
-export interface HttpPostClient {
-  post: (url: string, body?: object) => Promise<HttpResponse>
+export interface HttpPostClient<T, R> {
+  post: (url: string, body?: T) => Promise<HttpResponse<R>>
 }

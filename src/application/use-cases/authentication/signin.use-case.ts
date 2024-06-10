@@ -3,11 +3,12 @@ import { type SignInInput } from './signin.input'
 import { HttpStatusCode } from '@/application/contracts/http-response'
 import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials.error'
 import { UnexpectedError } from '@/domain/errors/unexpected.error'
+import { type Account } from '@/domain/entities/account'
 
 export class SignInUseCase {
   constructor (
     private readonly url: string,
-    private readonly httpClient: HttpPostClient
+    private readonly httpClient: HttpPostClient<SignInInput, Account>
   ) {}
 
   async execute (input: SignInInput): Promise<void> {

@@ -6,10 +6,12 @@ import { mockSigInInput } from '@/application/test/mock-sigin-input'
 import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials.error'
 import { HttpStatusCode } from '@/application/contracts/http-response'
 import { UnexpectedError } from '@/domain/errors/unexpected.error'
+import { type Account } from '@/domain/entities/account'
+import { type SignInInput } from './signin.input'
 
 describe('SignInUseCase', () => {
   let sut: SignInUseCase
-  let httpPostClientSpy: HttpPostClientSpy
+  let httpPostClientSpy: HttpPostClientSpy<SignInInput, Account>
   let url: string
 
   beforeEach(() => {
@@ -53,6 +55,16 @@ describe('SignInUseCase', () => {
   })
 
   test('Sign In throws UnexpectedError for server error response', async () => {
+    httpPostClientSpy.response = {
+      statusCode: HttpStatusCode.serverError
+    }
+
+    const promise = sut.execute(mockSigInInput())
+
+    await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  test('Sign In throws UnexpectedError for not found response', async () => {
     httpPostClientSpy.response = {
       statusCode: HttpStatusCode.serverError
     }
