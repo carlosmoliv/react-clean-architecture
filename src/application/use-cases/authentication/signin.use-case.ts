@@ -11,11 +11,13 @@ export class SignInUseCase {
     private readonly httpClient: HttpPostClient<SignInInput, Account>
   ) {}
 
-  async execute (input: SignInInput): Promise<void> {
+  async execute (input: SignInInput): Promise<Account> {
     const httpResponse = await this.httpClient.post(this.url, input)
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
-        break
+        console.log(httpResponse.body)
+        if (httpResponse?.body === undefined) throw new UnexpectedError()
+        return httpResponse.body
       case HttpStatusCode.unauthorized:
         throw new InvalidCredentialsError()
       default:

@@ -8,6 +8,7 @@ import { HttpStatusCode } from '@/application/contracts/http-response'
 import { UnexpectedError } from '@/domain/errors/unexpected.error'
 import { type Account } from '@/domain/entities/account'
 import { type SignInInput } from './signin.input'
+import { mockAccount } from '@/domain/test/mock-account'
 
 describe('SignInUseCase', () => {
   let sut: SignInUseCase
@@ -15,18 +16,21 @@ describe('SignInUseCase', () => {
   let url: string
 
   beforeEach(() => {
-    httpPostClientSpy = new HttpPostClientSpy()
+    httpPostClientSpy = new HttpPostClientSpy<SignInInput, Account>()
     url = faker.internet.url()
     sut = new SignInUseCase(url, httpPostClientSpy)
   })
 
   test('Call to HttpClient with correct URL', async () => {
+    httpPostClientSpy.response.body = mockAccount()
+
     await sut.execute(mockSigInInput())
 
     expect(httpPostClientSpy.url).toBe(url)
   })
 
   test('Call to HttpClient with correct body', async () => {
+    httpPostClientSpy.response.body = mockAccount()
     const signInput = mockSigInInput()
 
     await sut.execute(signInput)
@@ -74,13 +78,16 @@ describe('SignInUseCase', () => {
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
-  test('Sign In throws UnexpectedError for not found response', async () => {
+  test('Sign In returns an Account when response is successful', async () => {
+    const httpResult = mockAccount()
     httpPostClientSpy.response = {
-      statusCode: HttpStatusCode.serverError
+      statusCode: HttpStatusCode.ok,
+      body: httpResult
     }
+    const input = mockSigInInput()
 
-    const promise = sut.execute(mockSigInInput())
+    const account = await sut.execute(input)
 
-    await expect(promise).rejects.toThrow(new UnexpectedError())
+    expect(account).toEqual(httpResult)
   })
 })
