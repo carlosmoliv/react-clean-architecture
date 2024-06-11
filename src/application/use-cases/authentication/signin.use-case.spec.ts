@@ -78,6 +78,12 @@ describe('SignInUseCase', () => {
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
+  test('Sign In throws UnexpectedError when the response is 200 and body is missing', async () => {
+    const promise = sut.execute(mockSigInInput())
+
+    await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
   test('Sign In returns an Account when response is successful', async () => {
     const httpResult = mockAccount()
     httpPostClientSpy.response = {

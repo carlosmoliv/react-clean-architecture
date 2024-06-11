@@ -15,7 +15,6 @@ export class SignInUseCase {
     const httpResponse = await this.httpClient.post(this.url, input)
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
-        console.log(httpResponse.body)
         if (httpResponse?.body === undefined) throw new UnexpectedError()
         return httpResponse.body
       case HttpStatusCode.unauthorized:
