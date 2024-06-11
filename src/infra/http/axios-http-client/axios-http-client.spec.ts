@@ -10,18 +10,26 @@ describe('AxiosHttpClient', () => {
   let mockedAxios: jest.Mocked<typeof axios>
 
   beforeAll(() => {
-    url = faker.internet.url()
     mockedAxios = axios as jest.Mocked<typeof axios>
   })
 
   beforeEach(() => {
+    url = faker.internet.url()
     sut = new AxiosHttpClient()
   })
 
-  test('Should call axios correct URL and http verb', async () => {
-    await sut.post(url)
+  describe('post()', () => {
+    let body: object
 
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    expect(mockedAxios.post).toHaveBeenCalledWith(url)
+    beforeEach(() => {
+      body = { accessToken: faker.string.uuid() }
+    })
+
+    test('Should call axios with correct values', async () => {
+      await sut.post(url, body)
+
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      expect(mockedAxios.post).toHaveBeenCalledWith(url, body)
+    })
   })
 })
