@@ -1,14 +1,12 @@
 import { faker } from '@faker-js/faker'
 
 import { SignInUseCase } from './signin.use-case'
-import { HttpPostClientSpy } from '@/application/test/mock-http-client'
-import { mockSigInInput } from '@/application/test/mock-sigin-input'
-import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials.error'
-import { HttpStatusCode } from '@/application/contracts/http-response'
-import { UnexpectedError } from '@/domain/errors/unexpected.error'
-import { type Account } from '@/domain/entities/account'
 import { type SignInInput } from './signin.input'
-import { mockAccount } from '@/domain/test/mock-account'
+import { HttpPostClientSpy, mockSigInInput } from '@/application/test'
+import { InvalidCredentialsError, UnexpectedError } from '@/domain/errors'
+import { HttpStatusCode } from '@/application/contracts/http'
+import { type Account } from '@/domain/entities/account'
+import { mockAccount } from '@/domain/test'
 
 describe('SignInUseCase', () => {
   let sut: SignInUseCase

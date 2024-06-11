@@ -1,5 +1,4 @@
-import { type HttpPostClient } from '@/application/contracts/http-post-client'
-import { HttpStatusCode, type HttpResponse } from '@/application/contracts/http-response'
+import { type HttpPostClient, type HttpResponse, HttpStatusCode } from '@/application/contracts/http'
 
 export class HttpPostClientSpy<T, R> implements HttpPostClient<T, R> {
   url?: string
@@ -11,6 +10,6 @@ export class HttpPostClientSpy<T, R> implements HttpPostClient<T, R> {
   async post (url: string, body?: T): Promise<HttpResponse<R>> {
     this.url = url
     this.body = body
-    return await Promise.resolve(this.response)
+    return this.response
   }
 }

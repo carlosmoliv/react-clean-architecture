@@ -1,8 +1,6 @@
-import { type HttpPostClient } from '@/application/contracts/http-post-client'
+import { type HttpPostClient, HttpStatusCode } from '@/application/contracts/http'
 import { type SignInInput } from './signin.input'
-import { HttpStatusCode } from '@/application/contracts/http-response'
-import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials.error'
-import { UnexpectedError } from '@/domain/errors/unexpected.error'
+import { InvalidCredentialsError, UnexpectedError } from '@/domain/errors'
 import { type Account } from '@/domain/entities/account'
 
 export class SignInUseCase {
